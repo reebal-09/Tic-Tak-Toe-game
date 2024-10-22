@@ -1,0 +1,308 @@
+#include <iostream>
+#include <windows.h>
+#include <stdio.h>
+#include <cstdlib>
+using namespace std;
+
+char space[3][3] = { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
+int row;
+int column;
+char tokken = 'x';
+char n1[20];
+char n2[20];
+bool tie = false;
+
+void display()
+{
+	cout << "ENTER THE NAME OF FIRST PLAYER : ";
+	cin.getline(n1, 20);
+	cout << endl;
+	cout << "ENTER THE NAME OF SECOND PLAYER : ";
+	cin.getline(n2, 20);
+	cout << endl;
+	cout << n1 << " Will Play First \n";
+	cout << endl;
+	cout << n2 << " Will Play Second \n";
+}
+
+void functionone()
+{
+	system("color e");
+
+	for (int i = 0; i < 8; i++)
+	{
+	cout << endl << endl << endl << endl << endl << endl << endl << endl;
+	}
+
+	cout << "                        |    |    " << endl;
+	cout << "                     " << space[0][0] << "  |  " << space[0][1] << " |  " << space[0][2] << "    " << endl;
+	cout << "                    ____|____|____" << endl;
+	cout << "                        |    |    " << endl;
+	cout << "                     " << space[1][0] << "  |  " << space[1][1] << " |  " << space[1][2] << "    " << endl;
+	cout << "                    ____|____|____" << endl;
+	cout << "                        |    |    " << endl;
+	cout << "                     " << space[2][0] << "  |  " << space[2][1] << " |  " << space[2][2] << "    " << endl;
+	cout << "                        |    |    " << endl;
+}
+
+void functiontwo()
+{
+	int digit;
+	if (tokken == 'x')
+	{
+		cout << n1 << " please enter \n";
+		cin >> digit;
+	}
+	if (tokken == '0')
+	{
+		cout << n2 << " please enter \n";
+		cin >> digit;
+	}
+
+	if (digit == 1)
+	{
+		row = 0;
+		column = 0;
+	}
+	else if (digit == 2)
+	{
+		row = 0;
+		column = 1;
+	}
+	else if (digit == 3)
+	{
+		row = 0;
+		column = 2;
+	}
+	else if (digit == 4)
+	{
+		row = 1;
+		column = 0;
+	}
+	else if (digit == 5)
+	{
+		row = 1;
+		column = 1;
+	}
+	else if (digit == 6)
+	{
+		row = 1;
+		column = 2;
+	}
+	else if (digit == 7)
+	{
+		row = 2;
+		column = 0;
+	}
+	else if (digit == 8)
+	{
+		row = 2;
+		column = 1;
+	}
+	else if (digit == 9)
+	{
+		row = 2;
+		column = 2;
+	}
+	else if (digit<1 || digit>9)
+	{
+		cout << "INVALID OOPS !!! :(  ............ Enter any number between (1-9) " << endl;
+		functiontwo(); // Ask again for input if invalid
+		return;
+	}
+
+	if (space[row][column] != 'x' && space[row][column] != '0')
+	{
+		space[row][column] = tokken;
+		tokken = (tokken == 'x') ? '0' : 'x'; // Toggle token after valid move
+	}
+	else
+	{
+		cout << "THERE IS NO EMPTY SPACE :) SELECT ANOTHER DIGIT " << endl;
+		functiontwo(); // Ask again for input if space is not empty
+	}
+}
+
+bool functionthree()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (space[i][0] == space[i][1] && space[i][0] == space[i][2] && (space[i][0] == 'x' || space[i][0] == '0'))
+		{
+			return true; // Row check
+		}
+		if (space[0][i] == space[1][i] && space[0][i] == space[2][i] && (space[0][i] == 'x' || space[0][i] == '0'))
+		{
+			return true; // Column check
+		}
+	}
+
+	if (space[0][0] == space[1][1] && space[0][0] == space[2][2] && (space[0][0] == 'x' || space[0][0] == '0'))
+	{
+		return true; // Diagonal check (top-left to bottom-right)
+	}
+	if (space[0][2] == space[1][1] && space[0][2] == space[2][0] && (space[0][2] == 'x' || space[0][2] == '0'))
+	{
+		return true; // Diagonal check (top-right to bottom-left)
+	}
+
+	bool allFilled = true;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (space[i][j] != 'x' && space[i][j] != '0')
+			{
+				allFilled = false; // Check if there are any empty spaces
+				break;
+			}
+		}
+		if (!allFilled)
+		{
+			break;
+		}
+	}
+	tie = allFilled; // Set tie to true if all spaces are filled
+	return allFilled; // Return true if all spaces are filled (tie game)
+}
+
+
+int main()
+{
+	//Loaading bar 
+	system("color 0e");
+	system("cls");
+	//printf("\e[?25l");//comment out
+	SetConsoleCP(437);
+	SetConsoleOutputCP(437);
+	int bar1 = 177, bar2 = 219;
+	cout << "\n\n\n\n\n\n\n\t\t\t\t\tLoading....";
+	cout << "\n\n\n\t\t\t\t";
+	for (int i = 0; i < 25; i++)
+		cout << (char)bar1;
+	cout << "\r";
+	cout << "\t\t\t\t";
+	for (int j = 0; j < 25; j++)
+	{
+		cout << (char)bar2;
+		Sleep(150);
+	}
+	cout << "\n\t\t\t\t" << (char)1 << "!";
+	//cout << endl << endl << endl;
+	system("pause");
+
+	//AFTER LOADING BAR
+	system("color 80");
+	{
+
+
+		//FOR LOOP FOR SKIPPING LINS
+		for (int L = 0; L <= 20; L++)
+		{
+			cout << endl;
+		}
+
+		cout << "                                                        W       W  EEEEE  L       CCCCC  OOOOO  M     M  EEEEE  " << endl;
+		cout << "                                                        W       W  E      L      C       O   O  MM   MM  E      " << endl;
+		cout << "                                                        W   W   W  EEE    L     C        O   O  M M M M  EEE    " << endl;
+		cout << "                                                        W  W W  W  E      L     C        O   O  M  M  M  E      " << endl;
+		cout << "                                                        W W   W W  E      L      C       O   O  M     M  E      " << endl;
+		cout << "                                                        WW     WW  EEEEE  LLLLL   CCCCC  OOOOO  M     M  EEEEE  " << endl;
+		cout << endl;
+		cout << "                                             TTTTTTT  OOOOO       TTTTTTT  H   H  EEEEE       GGGG     AAAAA  MM   MM  EEEEE  " << endl;
+		cout << "                                                T    O     O         T     H   H  E          G         A   A  MM   MM  E      " << endl;
+		cout << "                                                T    O     O         T     HHHHH  EEE        G         AAAAA  M M M M  EEE    " << endl;
+		cout << "                                                T    O     O         T     H   H  E          G   GGGG  A   A  M  M  M  E      " << endl;
+		cout << "                                                T     OOOOO          T     H   H  EEEEE       GGGG  G  A   A  M     M  EEEEE  " << endl;
+
+		system("pause");
+
+		//for loop for the iteration of (.)
+		for (int L = 0; L <= 30; L++)
+		{
+			cout << "." << endl;
+		}
+
+
+		cout << "                                                  TTTTT  IIIII   CCCCC     TTTTT     A       CCCCC     TTTTT  OOOO    K   K                " << endl;
+		cout << "                                                    T      I    C            T      A A     C            T   O    O   K  K                     " << endl;
+		cout << "                                                    T      I   C             T     A   A   C             T   O    O   KK                      " << endl;
+		cout << "                                                    T      I    C            T    A AAA A   C            T   O    O   K  K                     " << endl;
+		cout << "                                                    T    IIIII   CCCCC       T   A       A   CCCCC       T    OOOO    K   K               " << endl;
+		cout << "                                                                                              " << endl;
+		cout << endl;
+
+		//for loop for the iteration of (.)
+		for (int L = 0; L <= 30; L++)
+		{
+			cout << "." << endl;
+		}
+
+		cout << "    PPPPPPP    RRRRRRR   OOOOO    CCCCC  EEEEEE  SSSSS  SSSSS   IIIIII  NN    N   GGGGG      " << endl;
+		cout << "    P      P   R     R  O     O  C       E       S      S         II    N N   N  G           " << endl;
+		cout << "    P      P   R     R  O     O  C       EEEEEE  SSSSS  SSSSS     II    N  N  N  G           " << endl;
+		cout << "    P PPPPP    RRRRRR   O     O  C       E           S      S     II    N   N N  G    GGG    " << endl;
+		cout << "    P          R  R      OOOOO    CCCCC  EEEEEE  SSSSS  SSSSS   IIIIII  N    NN   GGGGG G    " << endl;
+		cout << "    P          R    R                                                                        " << endl;
+
+
+
+		//Calling Game Functions 
+		system("color 0b");
+		display();
+		while (!functionthree())
+		{
+			functionone();
+			functiontwo();
+		}
+
+		// Determine the winner or if it's a tie
+		if (tokken == 'x' && !tie)
+		{
+			cout << n2 << "   " << endl;
+				//FOR LOOP FOR SKIPPING LINS
+			for (int L = 0; L <= 4; L++)
+			{
+				cout << endl;
+			}
+			system("color 2");
+			cout << "                         W       W  III   N     N   SSS " << endl;
+			cout << "                         W       W   I    NN    N  S    " << endl;
+			cout << "                         W   W   W   I    N N   N   SS " << endl;
+			cout << "                         W  W W  W   I    N  N  N     S" << endl;
+			cout << "                         W W   W W  III   N   N N  SSS " << endl;
+
+		}
+		else if (tokken == '0' && !tie)
+		{
+			cout << n1 << "   " << endl;
+			//FOR LOOP FOR SKIPPING LINS
+			for (int L = 0; L <= 4; L++)
+			{
+				cout << endl;
+			}
+			system("color 2");
+			cout << "                         W       W  III   N     N   SSS " << endl;
+			cout << "                         W       W   I    NN    N  S    " << endl;
+			cout << "                         W   W   W   I    N N   N   SS " << endl;
+			cout << "                         W  W W  W   I    N  N  N     S" << endl;
+			cout << "                         W W   W W  III   N   N N  SSS " << endl;
+
+		}
+		else
+		{
+			system("color 4");
+			cout << "  TTTTTT  IIIII  EEEEE" << endl;
+			cout << "    T       I    E    " << endl;
+			cout << "    T       I    EEE  " << endl;
+			cout << "    T       I    E    " << endl;
+			cout << "    T     IIIII  EEEEE" << endl;
+
+		}
+
+		return 0;
+	}
+
+}
+
+
